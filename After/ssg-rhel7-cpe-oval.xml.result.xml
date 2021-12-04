@@ -1,0 +1,2391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+  <generator>
+    <oval:product_name>combine_ovals.py from SCAP Security Guide</oval:product_name>
+    <oval:product_version>1.2.17</oval:product_version>
+    <oval:schema_version>5.10</oval:schema_version>
+    <oval:timestamp>2021-12-04T17:26:07</oval:timestamp>
+  </generator>
+  <directives>
+    <definition_true reported="true" content="full"/>
+    <definition_false reported="true" content="full"/>
+    <definition_unknown reported="true" content="full"/>
+    <definition_error reported="true" content="full"/>
+    <definition_not_evaluated reported="true" content="full"/>
+    <definition_not_applicable reported="true" content="full"/>
+  </directives>
+  <oval_definitions xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" xmlns:ind-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" xmlns:lin-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" xmlns:win-def="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+    <generator>
+      <oval:product_name>combine_ovals.py from SCAP Security Guide</oval:product_name>
+      <oval:product_version>ssg: [0, 1, 59], python: 3.9.7</oval:product_version>
+      <oval:schema_version>5.10</oval:schema_version>
+      <oval:timestamp>2021-11-26T22:45:18</oval:timestamp>
+    </generator>
+    <definitions>
+      <definition id="oval:ssg-system_boot_mode_is_uefi:def:1" version="1" class="inventory">
+        <metadata>
+          <title>UEFI system boot mode check</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:uefi"/>
+          <description>Check if system boot mode is UEFI.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_efi_dir_existence:tst:1" comment="check if /sys/firmware/efi folder exists"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-system_boot_mode_is_non_uefi:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Non-UEFI system boot mode check</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:non-uefi"/>
+          <description>Check if System boot mode is non-UEFI.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-system_boot_mode_is_uefi:def:1" negate="true" comment="Pass if System boot mode is non-UEFI"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-sssd_conf_uses_ldap:def:1" version="1" class="inventory">
+        <metadata>
+          <title>SSSD is configured to use LDAP</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:sssd-ldap"/>
+          <description>Identification provider is not set to ad within /etc/sssd/sssd.conf</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_id_provider_is_set_to_ad:tst:1" negate="true" comment="Identification provider is not set to ad within /etc/sssd/sssd.conf"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Test that the architecture is s390x</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is s390x</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" comment="Architecture is s390x"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-proc_sys_kernel_osrelease_arch_not_s390x:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Test for different architecture than s390x</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <description>Check that architecture of kernel in /proc/sys/kernel/osrelease is not s390x</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" negate="true" comment="Architecture is not s390x"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_is_a_machine:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Check if the scan target is a machine</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:machine"/>
+          <description>Check for absence of files characterizing container filesystems.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_env_is_a_container:def:1" negate="true" comment="If environment is not a container, it is machine"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_is_a_container:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Check if the scan target is a container</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:container"/>
+          <description>Check for presence of files characterizing container filesystems.</description>
+        </metadata>
+        <criteria operator="OR">
+          <criterion test_ref="oval:ssg-test_installed_env_is_a_docker_container:tst:1" comment="Check if /.dockerenv exists"/>
+          <criterion test_ref="oval:ssg-test_installed_env_is_a_podman_container:tst:1" comment="Check if /run/.containerenv exists"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_zipl_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>System uses zIPL</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:zipl"/>
+          <description>Checks if system uses zIPL bootloader.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_zipl_installed:tst:1" comment="Package s390utils-base is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_yum_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package yum is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:yum"/>
+          <description>Checks if package yum is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_yum_installed:tst:1" comment="Package yum is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_wifi_interface:def:1" version="1" class="inventory">
+        <metadata>
+          <title>WiFi interface is present</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:wifi-iface"/>
+          <description>Checks if any wifi interface is present.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_proc_net_wireless_exists:tst:1" comment="WiFi interface is present"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_systemd_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package systemd is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:systemd"/>
+          <description>Checks if package systemd is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_systemd_installed:tst:1" comment="Package systemd is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_sudo_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package sudo is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:sudo"/>
+          <description>Checks if package sudo is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_sudo_installed:tst:1" comment="Package sudo is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_sssd-common_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package sssd-common is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:sssd"/>
+          <description>Checks if package sssd-common is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_sssd-common_installed:tst:1" comment="Package sssd-common is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_postfix_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package postfix is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:postfix"/>
+          <description>Checks if package postfix is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_postfix_installed:tst:1" comment="Package postfix is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_pam_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package pam is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:pam"/>
+          <description>Checks if package pam is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_pam_installed:tst:1" comment="Package pam is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_ntp_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package ntp is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:ntp"/>
+          <description>Checks if package ntp is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_ntp_installed:tst:1" comment="Package ntp is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_nss-pam-ldapd_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package nss-pam-ldapd is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:nss-pam-ldapd"/>
+          <description>Checks if package nss-pam-ldapd is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_nss-pam-ldapd_installed:tst:1" comment="Package nss-pam-ldapd is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_net-snmp_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package net-snmp is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:net-snmp"/>
+          <description>Checks if package net-snmp is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_net-snmp_installed:tst:1" comment="Package net-snmp is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_login_defs:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package providing /etc/login.defs is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:login_defs"/>
+          <description>Checks if package providing /etc/login.defs and is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_login_defs_installed:tst:1" comment="Package providing /etc/login.defs is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_libuser_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package libuser is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:libuser"/>
+          <description>Checks if package libuser is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_libuser_installed:tst:1" comment="Package libuser is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_grub2_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package grub2 is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:grub2"/>
+          <description>Checks if package grub2-common is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_grub2_installed:tst:1" comment="Package grub2-common is installed"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" negate="true" comment="Test for ppcle64 architecture"/>
+            <criterion test_ref="oval:ssg-test_system_using_opal:tst:1" negate="true" comment="Test if OPAL is not used"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_gdm_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package gdm is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:gdm"/>
+          <description>Checks if package gdm is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_gdm_installed:tst:1" comment="Package gdm is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_chrony_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package chrony is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:chrony"/>
+          <description>Checks if package chrony is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_chrony_installed:tst:1" comment="Package chrony is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_env_has_audit_package:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Package audit is installed</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:audit"/>
+          <description>Checks if package audit is installed.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_env_has_audit_installed:tst:1" comment="Package audit is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_app_is_rhv4:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Virtualization 4</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:redhat:virtualization:4"/>
+          <description>The application installed installed on the system is
+      Red Hat Virtualization 4.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel7:def:1" comment="RHEL7 OS installed"/>
+          <criterion test_ref="oval:ssg-test_rhevm4_version:tst:1" comment="Red Hat Virtualization Manager (RHVM)"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_app_is_rhosp13:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat OpenStack Platform</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:redhat:openstack:13.0"/>
+          <description>The application installed installed on the system is
+      Red Hat OpenStack Platform 13.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel7:def:1" comment="RHEL7 OS installed"/>
+          <criterion test_ref="oval:ssg-test_rhosp13_release:tst:1" comment="OpenStack is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_app_is_rhosp10:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat OpenStack Platform</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/a:redhat:openstack:10"/>
+          <description>The application installed installed on the system is
+      Red Hat OpenStack Platform 10.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel7:def:1" comment="RHEL7 OS installed"/>
+          <criterion test_ref="oval:ssg-test_rhosp10_release:tst:1" comment="OpenStack is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_wrlinux8:def:1" version="1" class="inventory">
+        <metadata>
+          <title>WRLinux 8</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:windriver:wrlinux"/>
+          <description>The operating system installed on the system is
+      Wind River Linux 8</description>
+        </metadata>
+        <criteria comment="current WRLinux version is WRLinux8">
+          <criterion test_ref="oval:ssg-test_unix_wrlinux8:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criterion test_ref="oval:ssg-test_wrlinux8_version:tst:1" comment="WRLinux 8 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_wrlinux1019:def:1" version="1" class="inventory">
+        <metadata>
+          <title>WRLinux 1019</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:windriver:wrlinux"/>
+          <description>The operating system installed on the system is
+      Wind River Linux 1019</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_unix_wrlinux1019:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criterion test_ref="oval:ssg-test_wrlinux1019_name:tst:1" comment="Produce name is WRLinux"/>
+          <criterion test_ref="oval:ssg-test_wrlinux1019_version:tst:1" comment="WRLinux version is 1019"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ubuntu:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Ubuntu</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <description>The operating system installed is an Ubuntu System</description>
+        </metadata>
+        <criteria comment="System is Ubuntu">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_lsb:tst:1" comment="lsb-based distrib"/>
+          <criterion test_ref="oval:ssg-test_ubuntu:tst:1" comment="Ubuntu is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ubuntu2004:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Ubuntu 2004</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:canonical:ubuntu_linux:20.04"/>
+          <description>The operating system installed on the system is Ubuntu 2004</description>
+        </metadata>
+        <criteria comment="current Ubuntu version is Focal">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_ubuntu:def:1" comment="Ubuntu is installed"/>
+          <criterion test_ref="oval:ssg-test_ubuntu_focal:tst:1" comment="Focal is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ubuntu1804:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Ubuntu 1804</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:canonical:ubuntu_linux:18.04"/>
+          <description>The operating system installed on the system is Ubuntu 1804</description>
+        </metadata>
+        <criteria comment="current Ubuntu version is Bionic">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_ubuntu:def:1" comment="Ubuntu is installed"/>
+          <criterion test_ref="oval:ssg-test_ubuntu_bionic:tst:1" comment="Bionic is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ubuntu1604:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Ubuntu 1604</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:canonical:ubuntu_linux:16.04"/>
+          <description>The operating system installed on the system is Ubuntu 1604</description>
+        </metadata>
+        <criteria comment="current Ubuntu version is Xenial">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_ubuntu:def:1" comment="Ubuntu is installed"/>
+          <criterion test_ref="oval:ssg-test_ubuntu_xenial:tst:1" comment="Xenial is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_sle15:def:1" version="1" class="inventory">
+        <metadata>
+          <title>SUSE Linux Enterprise 15</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:suse:linux_enterprise_server:15"/>
+          <reference source="CPE" ref_id="cpe:/o:suse:linux_enterprise_desktop:15"/>
+          <description>The operating system installed on the system is
+      SUSE Linux Enterprise 15.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_sle15_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_sle15_desktop:tst:1" comment="SLE 15 Desktop is installed"/>
+            <criterion test_ref="oval:ssg-test_sle15_server:tst:1" comment="SLE 15 Server is installed"/>
+            <criterion test_ref="oval:ssg-test_sles_15_for_sap:tst:1" comment="SLES 15 for SAP Applications is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_sle12:def:1" version="1" class="inventory">
+        <metadata>
+          <title>SUSE Linux Enterprise 12</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:suse:linux_enterprise_server:12"/>
+          <reference source="CPE" ref_id="cpe:/o:suse:linux_enterprise_desktop:12"/>
+          <description>The operating system installed on the system is
+      SUSE Linux Enterprise 12.</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_sle12_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_sle12_desktop:tst:1" comment="SLE 12 Desktop is installed"/>
+            <criterion test_ref="oval:ssg-test_sle12_server:tst:1" comment="SLE 12 Server is installed"/>
+            <criterion test_ref="oval:ssg-test_sles_12_for_sap:tst:1" comment="SLES 12 for SAP Applications is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_sl7:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Scientific Linux 7</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:scientificlinux:scientificlinux:7"/>
+          <description>The operating system installed on the system is
+      Scientific Linux 7</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_sl7:tst:1" comment="Scientific Linux 7 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_sl6:def:1" version="2" class="inventory">
+        <metadata>
+          <title>Scientific Linux 6</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:scientificlinux:scientificlinux:6"/>
+          <description>The operating system installed on the system is
+      Scientific Linux 6</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_sl6:tst:1" comment="Scientific Linux 6 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhv4:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Virtualization 4</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:virtualization:4"/>
+          <description>The operating system installed on the system is
+      Red Hat Virtualization Host 4.4+ or Red Hat Enterprise Host.</description>
+        </metadata>
+        <criteria operator="OR">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel8:def:1" comment="RHEL8 OS installed"/>
+          <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" comment="Red Hat Virtualization Host (RHVH)"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel9:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 9</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:9"/>
+          <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 9</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel9_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_rhel9:tst:1" comment="RHEL 9 is installed"/>
+            <criteria comment="Red Hat Enterprise Virtualization Host is installed">
+              <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" comment="Red Hat Virtualization Host (RHVH)"/>
+              <criterion test_ref="oval:ssg-test_rhevh_rhel9_version:tst:1" comment="Red Hat Enterprise Virtualization Host is based on RHEL 9"/>
+            </criteria>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_9:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.9</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.9"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.9</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_9:tst:1" comment="RHEL 8.9 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_8:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.8</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.8"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.8</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_8:tst:1" comment="RHEL 8.8 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_7:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.7</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.7"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.7</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_7:tst:1" comment="RHEL 8.7 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_6:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.6</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.6"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.6</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_6:tst:1" comment="RHEL 8.6 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_5:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.5</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.5"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.5</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_5:tst:1" comment="RHEL 8.5 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_4:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.4</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.4"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.4</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_4:tst:1" comment="RHEL 8.4 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_3:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.3</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.3"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.3</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_3:tst:1" comment="RHEL 8.3 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_2:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.2</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.2"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.2</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_2:tst:1" comment="RHEL 8.2 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_1:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.1</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.1"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.1</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_1:tst:1" comment="RHEL 8.1 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_10:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.10</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.10"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.10</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_10:tst:1" comment="RHEL 8.10 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8_0:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8.0</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8.0"/>
+          <description>The operating system installed on the system is Red Hat Enterprise Linux 8.0</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_0:tst:1" comment="RHEL 8.0 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel8:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 8</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:8"/>
+          <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 8</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel8_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_rhel8:tst:1" comment="RHEL 8 is installed"/>
+            <criteria comment="Red Hat Enterprise Virtualization Host is installed">
+              <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" comment="Red Hat Virtualization Host (RHVH)"/>
+              <criterion test_ref="oval:ssg-test_rhevh_rhel8_version:tst:1" comment="Red Hat Enterprise Virtualization Host is based on RHEL 8"/>
+            </criteria>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhel7:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux 7</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux:7"/>
+          <description>The operating system installed on the system is
+      Red Hat Enterprise Linux 7</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_rhel7_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_rhel7_client:tst:1" comment="RHEL 7 Client is installed"/>
+            <criterion test_ref="oval:ssg-test_rhel7_workstation:tst:1" comment="RHEL 7 Workstation is installed"/>
+            <criterion test_ref="oval:ssg-test_rhel7_server:tst:1" comment="RHEL 7 Server is installed"/>
+            <criterion test_ref="oval:ssg-test_rhel7_computenode:tst:1" comment="RHEL 7 Compute Node is installed"/>
+            <criteria comment="Red Hat Enterprise Virtualization Host is installed">
+              <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" comment="Red Hat Virtualization Host (RHVH)"/>
+              <criterion test_ref="oval:ssg-test_rhevh_rhel7_version:tst:1" comment="Red Hat Enterprise Virtualization Host is based on RHEL 7"/>
+            </criteria>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_rhcos4:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Red Hat Enterprise Linux CoreOS</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:redhat:enterprise_linux_coreos:4"/>
+          <description>The operating system installed on the system is
+      Red Hat Enterprise Linux CoreOS release 4</description>
+        </metadata>
+        <criteria>
+          <criteria>
+            <criterion test_ref="oval:ssg-test_rhcos:tst:1" comment="RHCOS is installed"/>
+            <criterion test_ref="oval:ssg-test_rhcos4:tst:1" comment="RHCOS version 4 is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Installed operating system is part of the Unix family</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <description>The operating system installed on the system is part of the Unix OS family</description>
+        </metadata>
+        <criteria>
+          <criterion test_ref="oval:ssg-test_unix_family:tst:1" comment="Installed operating system is part of the unix family"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_opensuse_leap42:def:1" version="1" class="inventory">
+        <metadata>
+          <title>openSUSE Leap 42</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:opensuse:leap:42.1"/>
+          <reference source="CPE" ref_id="cpe:/o:opensuse:leap:42.2"/>
+          <reference source="CPE" ref_id="cpe:/o:opensuse:leap:42.3"/>
+          <description>The operating system installed on the system is openSUSE Leap 42.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_opensuse:def:1" comment="openSUSE is installed"/>
+          <criterion test_ref="oval:ssg-test_opensuse_leap42_installed:tst:1" comment="openSUSE Leap 42 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_opensuse_leap15:def:1" version="1" class="inventory">
+        <metadata>
+          <title>openSUSE Leap 15</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:opensuse:leap:15.0"/>
+          <description>The operating system installed on the system is openSUSE Leap 15.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_opensuse:def:1" comment="openSUSE is installed"/>
+          <criterion test_ref="oval:ssg-test_opensuse_leap15_installed:tst:1" comment="openSUSE Leap 15 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_opensuse:def:1" version="1" class="inventory">
+        <metadata>
+          <title>openSUSE</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <description>The operating system installed on the system is openSUSE.</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_opensuse_installed:tst:1" comment="openSUSE is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ol8_family:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Oracle Linux 8</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:oracle:linux:8"/>
+          <description>The operating system installed on the system is
+      Oracle Linux 8</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_ol8_system:tst:1" comment="Oracle Linux 8 System is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_ol7_family:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Oracle Linux 7</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:oracle:linux:7"/>
+          <description>The operating system installed on the system is
+      Oracle Linux 7</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criteria operator="OR">
+            <criterion test_ref="oval:ssg-test_ol7_system:tst:1" comment="Oracle Linux 7 System is installed"/>
+          </criteria>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_fedora:def:1" version="3" class="inventory">
+        <metadata>
+          <title>Installed operating system is Fedora</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:fedoraproject:fedora:33"/>
+          <reference source="CPE" ref_id="cpe:/o:fedoraproject:fedora:34"/>
+          <reference source="CPE" ref_id="cpe:/o:fedoraproject:fedora:35"/>
+          <reference source="CPE" ref_id="cpe:/o:fedoraproject:fedora:36"/>
+          <description>The operating system installed on the system is Fedora</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_fedora_release_rpm:tst:1" comment="fedora-release RPM packages are installed"/>
+          <criterion test_ref="oval:ssg-test_fedora_vendor_product:tst:1" comment="CPE vendor is 'fedoraproject' and product is 'fedora'"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_debian:def:1" version="1" class="inventory">
+        <metadata>
+          <title>Debian</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <description>The operating system installed is a Debian System</description>
+        </metadata>
+        <criteria comment="System is Debian">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_debian:tst:1" comment="Debian is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_debian9:def:1" version="3" class="inventory">
+        <metadata>
+          <title>Debian 9</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:debian:debian_linux:9"/>
+          <description>The operating system installed on the system is Debian 9</description>
+        </metadata>
+        <criteria comment="current Debian version is Debian Stretch">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_debian:def:1" comment="Debian is installed"/>
+          <criterion test_ref="oval:ssg-test_debian_9:tst:1" comment="Debian9 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_debian11:def:1" version="3" class="inventory">
+        <metadata>
+          <title>Debian Linux 11</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:debian:debian_linux:11"/>
+          <description>The operating system installed on the system is Debian 11</description>
+        </metadata>
+        <criteria comment="Debian Linux is version 11">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_debian:def:1" comment="Debian is installed"/>
+          <criterion test_ref="oval:ssg-test_debian_11:tst:1" comment="Debian11 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_debian10:def:1" version="3" class="inventory">
+        <metadata>
+          <title>Debian Linux 10</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:debian:debian_linux:10"/>
+          <description>The operating system installed on the system is Debian 10</description>
+        </metadata>
+        <criteria comment="Debian Linux is version 10">
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_debian:def:1" comment="Debian is installed"/>
+          <criterion test_ref="oval:ssg-test_debian_10:tst:1" comment="Debian10 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_centos8:def:1" version="2" class="inventory">
+        <metadata>
+          <title>CentOS 8</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:centos:centos:8"/>
+          <description>The operating system installed on the system is
+      CentOS 8</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_centos8_name:tst:1" comment="OS is CentOS"/>
+          <criterion test_ref="oval:ssg-test_centos8_version:tst:1" comment="OS version is 8"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_centos7:def:1" version="2" class="inventory">
+        <metadata>
+          <title>CentOS 7</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:centos:centos:7"/>
+          <description>The operating system installed on the system is
+      CentOS 7</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_centos7:tst:1" comment="CentOS7 is installed"/>
+        </criteria>
+      </definition>
+      <definition id="oval:ssg-installed_OS_is_centos6:def:1" version="2" class="inventory">
+        <metadata>
+          <title>CentOS 6</title>
+          <affected family="unix">
+            <platform>Red Hat Enterprise Linux 7</platform>
+          </affected>
+          <reference source="CPE" ref_id="cpe:/o:centos:centos:6"/>
+          <description>The operating system installed on the system is
+      CentOS 6</description>
+        </metadata>
+        <criteria>
+          <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" comment="Installed OS is part of the Unix family"/>
+          <criterion test_ref="oval:ssg-test_centos6:tst:1" comment="CentOS6 is installed"/>
+        </criteria>
+      </definition>
+    </definitions>
+    <tests>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_wrlinux8_version:tst:1" version="1" check="all" comment="Check WRLinux8 version">
+        <ind-def:object object_ref="oval:ssg-obj_version_wrlinux8:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_wrlinux1019_version:tst:1" version="1" check="all" comment="Check WRLinux10.19 version">
+        <ind-def:object object_ref="oval:ssg-obj_version_wrlinux1019:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_wrlinux1019_name:tst:1" version="1" check="all" comment="Check WRLinux10.19 version">
+        <ind-def:object object_ref="oval:ssg-obj_name_wrlinux1019:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:family_test id="oval:ssg-test_unix_wrlinux8:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_unix_wrlinux8:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_unix_wrlinux8:ste:1"/>
+      </ind-def:family_test>
+      <ind-def:family_test id="oval:ssg-test_unix_wrlinux1019:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_unix_wrlinux1019:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_unix_wrlinux1019:ste:1"/>
+      </ind-def:family_test>
+      <ind-def:family_test id="oval:ssg-test_unix_family:tst:1" version="1" check="all" comment="Test installed OS is part of the unix family">
+        <ind-def:object object_ref="oval:ssg-object_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_ubuntu_xenial:tst:1" version="1" check="all" comment="Check Ubuntu version">
+        <ind-def:object object_ref="oval:ssg-obj_ubuntu_xenial:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_ubuntu_focal:tst:1" version="1" check="all" comment="Check Ubuntu version">
+        <ind-def:object object_ref="oval:ssg-obj_ubuntu_focal:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_ubuntu_bionic:tst:1" version="1" check="all" comment="Check Ubuntu version">
+        <ind-def:object object_ref="oval:ssg-obj_ubuntu_bionic:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_ubuntu:tst:1" version="1" check="all" comment="Check Ubuntu">
+        <ind-def:object object_ref="oval:ssg-obj_ubuntu:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <unix-def:file_test id="oval:ssg-test_system_using_opal:tst:1" version="1" check_existence="all_exist" check="all" comment="Check if /sys/firmware/opal exists">
+        <unix-def:object object_ref="oval:ssg-object_system_using_opal:obj:1"/>
+      </unix-def:file_test>
+      <unix-def:uname_test id="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" version="1" check="all" comment="64 bit architecture">
+        <unix-def:object object_ref="oval:ssg-object_system_info_architecture_ppcle_64:obj:1"/>
+        <unix-def:state state_ref="oval:ssg-state_system_info_architecture_ppcle_64:ste:1"/>
+      </unix-def:uname_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sles_15_for_sap:tst:1" version="1" check="all" comment="SLES_SAP-release is version 15">
+        <lin-def:object object_ref="oval:ssg-obj_sles_15_for_sap:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sles_15_for_sap:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sles_12_for_sap:tst:1" version="1" check="all" comment="SLES_SAP-release is version 12">
+        <lin-def:object object_ref="oval:ssg-obj_sles_12_for_sap:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sles_12_for_sap:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:family_test id="oval:ssg-test_sle15_unix_family:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_sle15_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_sle15_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sle15_server:tst:1" version="1" check="all" comment="sles-release is version 15">
+        <lin-def:object object_ref="oval:ssg-obj_sle15_server:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sle15_server:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sle15_desktop:tst:1" version="1" check="all" comment="sled-release is version 15">
+        <lin-def:object object_ref="oval:ssg-obj_sle15_desktop:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sle15_desktop:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:family_test id="oval:ssg-test_sle12_unix_family:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_sle12_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_sle12_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sle12_server:tst:1" version="1" check="all" comment="sles-release is version 6">
+        <lin-def:object object_ref="oval:ssg-obj_sle12_server:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sle12_server:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sle12_desktop:tst:1" version="1" check="all" comment="sled-release is version 6">
+        <lin-def:object object_ref="oval:ssg-obj_sle12_desktop:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sle12_desktop:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sl7:tst:1" version="1" check="all" comment="sl-release is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_sl7:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sl7:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_sl6:tst:1" version="1" check="all" comment="sl-release is version 6">
+        <lin-def:object object_ref="oval:ssg-obj_sl6:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_sl6:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhvh4_version:tst:1" version="1" check_existence="only_one_exists" check="all" comment="redhat-release-virtualization-host RPM package is installed">
+        <lin-def:object object_ref="oval:ssg-obj_rhvh4_version:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhvh4_version:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhosp13_release:tst:1" version="1" check="all" comment="OpenStack is version 13">
+        <lin-def:object object_ref="oval:ssg-obj_rhosp13_release:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhosp13_release:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhosp10_release:tst:1" version="1" check="all" comment="OpenStack is version 10">
+        <lin-def:object object_ref="oval:ssg-obj_rhosp10_release:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhosp10_release:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhevm4_version:tst:1" version="1" check="all" comment="rhevm4-appliance is installed">
+        <lin-def:object object_ref="oval:ssg-obj_rhevm4_version:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhevm4_version:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhevh_rhel9_version:tst:1" version="1" check="all" comment="RHEVH base RHEL is version 9">
+        <ind-def:object object_ref="oval:ssg-obj_rhevh_rhel9_version:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhevh_rhel9_version:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhevh_rhel8_version:tst:1" version="1" check="all" comment="RHEVH base RHEL is version 8">
+        <ind-def:object object_ref="oval:ssg-obj_rhevh_rhel8_version:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhevh_rhel8_version:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhevh_rhel7_version:tst:1" version="1" check="all" comment="RHEVH base RHEL is version 7">
+        <ind-def:object object_ref="oval:ssg-obj_rhevh_rhel7_version:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhevh_rhel7_version:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:family_test id="oval:ssg-test_rhel9_unix_family:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_rhel9_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhel9_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel9:tst:1" version="1" check="all" comment="redhat-release is version 9">
+        <lin-def:object object_ref="oval:ssg-obj_rhel9:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel9:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:family_test id="oval:ssg-test_rhel8_unix_family:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_rhel8_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhel8_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_9:tst:1" version="1" check="all" comment="redhat-release is version 8.9">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_9:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_9:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_8:tst:1" version="1" check="all" comment="redhat-release is version 8.8">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_8:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_8:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_7:tst:1" version="1" check="all" comment="redhat-release is version 8.7">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_7:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_7:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_6:tst:1" version="1" check="all" comment="redhat-release is version 8.6">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_6:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_6:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_5:tst:1" version="1" check="all" comment="redhat-release is version 8.5">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_5:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_5:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_4:tst:1" version="1" check="all" comment="redhat-release is version 8.4">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_4:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_4:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_3:tst:1" version="1" check="all" comment="redhat-release is version 8.3">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_3:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_3:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_2:tst:1" version="1" check="all" comment="redhat-release is version 8.2">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_2:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_2:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_1:tst:1" version="1" check="all" comment="redhat-release is version 8.1">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_1:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_1:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_10:tst:1" version="1" check="all" comment="redhat-release is version 8.10">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_10:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_10:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8_0:tst:1" version="1" check="all" comment="redhat-release is version 8.0">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8_0:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8_0:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel8:tst:1" version="1" check="all" comment="redhat-release is version 8">
+        <lin-def:object object_ref="oval:ssg-obj_rhel8:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel8:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel7_workstation:tst:1" version="1" check="all" comment="redhat-release-workstation is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_rhel7_workstation:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel7_workstation:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:family_test id="oval:ssg-test_rhel7_unix_family:tst:1" version="1" check="all" comment="installed OS part of unix family">
+        <ind-def:object object_ref="oval:ssg-obj_rhel7_unix_family:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhel7_unix_family:ste:1"/>
+      </ind-def:family_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel7_server:tst:1" version="1" check="all" comment="redhat-release-server is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_rhel7_server:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel7_server:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel7_computenode:tst:1" version="1" check="all" comment="redhat-release-computenode is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_rhel7_computenode:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel7_computenode:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_rhel7_client:tst:1" version="1" check="all" comment="redhat-release-client is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_rhel7_client:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_rhel7_client:ste:1"/>
+      </lin-def:rpminfo_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhcos:tst:1" version="1" check="all" comment="os-release is rhcos">
+        <ind-def:object object_ref="oval:ssg-obj_rhcos:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhcos:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_rhcos4:tst:1" version="1" check="all" comment="rhcoreos is version 4">
+        <ind-def:object object_ref="oval:ssg-obj_rhcos4:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_rhcos4:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" version="1" check_existence="all_exist" check="all" comment="proc_sys_kernel is for s390x architecture">
+        <ind-def:object object_ref="oval:ssg-object_proc_sys_kernel_osrelease_arch_s390x:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_proc_sys_kernel_osrelease_arch_s390x:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <unix-def:file_test id="oval:ssg-test_proc_net_wireless_exists:tst:1" version="1" check_existence="all_exist" check="all" comment="Test if /proc/net/wireless exists">
+        <unix-def:object object_ref="oval:ssg-object_proc_net_wireless_exists:obj:1"/>
+      </unix-def:file_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_opensuse_leap42_installed:tst:1" version="1" check="all" comment="openSUSE Leap 42 is installed">
+        <lin-def:object object_ref="oval:ssg-obj_opensuse_leap42_installed:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_opensuse_leap42_installed:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_opensuse_leap15_installed:tst:1" version="1" check="all" comment="openSUSE Leap 15 is installed">
+        <lin-def:object object_ref="oval:ssg-obj_opensuse_leap15_installed:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_opensuse_leap15_installed:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_opensuse_installed:tst:1" version="1" check="all" comment="openSUSE is installed">
+        <lin-def:object object_ref="oval:ssg-obj_opensuse_installed:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_opensuse_installed:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_ol8_system:tst:1" version="1" check="all" comment="oraclelinux-release is version 8">
+        <lin-def:object object_ref="oval:ssg-obj_ol8_system:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_ol8_system:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_ol7_system:tst:1" version="1" check="all" comment="oraclelinux-release is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_ol7_system:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_ol7_system:ste:1"/>
+      </lin-def:rpminfo_test>
+      <unix-def:file_test id="oval:ssg-test_lsb:tst:1" version="1" check_existence="all_exist" check="all" comment="/etc/lsb-release exists">
+        <unix-def:object object_ref="oval:ssg-obj_lsb:obj:1"/>
+      </unix-def:file_test>
+      <unix-def:file_test id="oval:ssg-test_installed_env_is_a_podman_container:tst:1" version="1" check_existence="all_exist" check="all" comment="Check if /run/.containerenv exists">
+        <unix-def:object object_ref="oval:ssg-object_installed_env_is_a_podman_container:obj:1"/>
+      </unix-def:file_test>
+      <unix-def:file_test id="oval:ssg-test_installed_env_is_a_docker_container:tst:1" version="1" check_existence="all_exist" check="all" comment="Check if /.dockerenv exists">
+        <unix-def:object object_ref="oval:ssg-object_installed_env_is_a_docker_container:obj:1"/>
+      </unix-def:file_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_id_provider_is_set_to_ad:tst:1" version="1" check_existence="all_exist" check="all" comment="SSSD Configuration is set to use Active Directory">
+        <ind-def:object object_ref="oval:ssg-object_id_provider_is_set_to_ad:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_fedora_vendor_product:tst:1" version="1" check="all" comment="CPE vendor is 'fedoraproject' and 'product' is fedora">
+        <ind-def:object object_ref="oval:ssg-object_fedora_vendor_product:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_fedora_release_rpm:tst:1" version="1" check="all" comment="fedora-release RPM packages are installed">
+        <lin-def:object object_ref="oval:ssg-object_fedora_release_rpm:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_zipl_installed:tst:1" version="1" check="all" comment="system has package zipl installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_zipl_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_yum_installed:tst:1" version="1" check="all" comment="system has package yum installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_yum_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_systemd_installed:tst:1" version="1" check="all" comment="system has package systemd installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_systemd_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_sudo_installed:tst:1" version="1" check="all" comment="system has package sudo installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_sudo_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_sssd-common_installed:tst:1" version="1" check="all" comment="system has package sssd-common installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_sssd-common_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_postfix_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package postfix is installed">
+        <lin-def:object object_ref="oval:ssg-obj_test_env_has_postfix_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_pam_installed:tst:1" version="1" check="all" comment="system has package pam installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_pam_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_ntp_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package ntp is installed">
+        <lin-def:object object_ref="oval:ssg-obj_test_env_has_ntp_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_nss-pam-ldapd_installed:tst:1" version="1" check="all" comment="system has package nss-pam-ldapd installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_nss-pam-ldapd_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_net-snmp_installed:tst:1" version="1" check="all" comment="system has package net-snmp installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_net-snmp_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_login_defs_installed:tst:1" version="1" check="all" comment="system has package shadow-utils installed, which provides the /etc/login.defs file.">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_login_defs_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_libuser_installed:tst:1" version="1" check="all" comment="system has package libuser installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_libuser_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_grub2_installed:tst:1" version="1" check="all" comment="system has package grub2-common installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_grub2_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_gdm_installed:tst:1" version="1" check="all" comment="system has package gdm installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_gdm_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_chrony_installed:tst:1" version="1" check_existence="all_exist" check="all" comment="package chrony is installed">
+        <lin-def:object object_ref="oval:ssg-obj_test_env_has_chrony_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_env_has_audit_installed:tst:1" version="1" check="all" comment="system has package audit installed">
+        <lin-def:object object_ref="oval:ssg-obj_env_has_audit_installed:obj:1"/>
+      </lin-def:rpminfo_test>
+      <unix-def:file_test id="oval:ssg-test_efi_dir_existence:tst:1" version="1" check="all" comment="Verify if /sys/firmware/efi folder exists">
+        <unix-def:object object_ref="oval:ssg-object_file_sys_firmware_efi:obj:1"/>
+      </unix-def:file_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_debian_9:tst:1" version="1" check="all" comment="Check Debian version">
+        <ind-def:object object_ref="oval:ssg-obj_debian_9:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_debian_11:tst:1" version="1" check="all" comment="Check Debian version">
+        <ind-def:object object_ref="oval:ssg-obj_debian_11:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_debian_10:tst:1" version="1" check="all" comment="Check Debian version">
+        <ind-def:object object_ref="oval:ssg-obj_debian_10:obj:1"/>
+      </ind-def:textfilecontent54_test>
+      <unix-def:file_test id="oval:ssg-test_debian:tst:1" version="1" check_existence="all_exist" check="all" comment="/etc/debian_version exists">
+        <unix-def:object object_ref="oval:ssg-obj_debian:obj:1"/>
+      </unix-def:file_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_centos8_version:tst:1" version="1" check="all" comment="Check os-release VERSION_ID">
+        <ind-def:object object_ref="oval:ssg-obj_version_centos8:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_version_centos8:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <ind-def:textfilecontent54_test id="oval:ssg-test_centos8_name:tst:1" version="1" check="all" comment="Check os-release ID">
+        <ind-def:object object_ref="oval:ssg-obj_name_centos8:obj:1"/>
+        <ind-def:state state_ref="oval:ssg-state_name_centos8:ste:1"/>
+      </ind-def:textfilecontent54_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_centos7:tst:1" version="1" check="all" comment="centos-release is version 7">
+        <lin-def:object object_ref="oval:ssg-obj_centos7:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_centos7:ste:1"/>
+      </lin-def:rpminfo_test>
+      <lin-def:rpminfo_test id="oval:ssg-test_centos6:tst:1" version="1" check="all" comment="centos-release is version 6">
+        <lin-def:object object_ref="oval:ssg-obj_centos6:obj:1"/>
+        <lin-def:state state_ref="oval:ssg-state_centos6:ste:1"/>
+      </lin-def:rpminfo_test>
+    </tests>
+    <objects>
+      <ind-def:family_object id="oval:ssg-object_unix_family:obj:1" version="1"/>
+      <unix-def:file_object id="oval:ssg-object_system_using_opal:obj:1" version="1">
+        <unix-def:filepath>/sys/firmware/opal</unix-def:filepath>
+      </unix-def:file_object>
+      <unix-def:uname_object id="oval:ssg-object_system_info_architecture_ppcle_64:obj:1" version="1" comment="64 bit architecture"/>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_proc_sys_kernel_osrelease_arch_s390x:obj:1" version="1">
+        <ind-def:filepath>/proc/sys/kernel/osrelease</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^.*\.(.*)$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <unix-def:file_object id="oval:ssg-object_proc_net_wireless_exists:obj:1" version="1" comment="/proc/net/wireless file">
+        <unix-def:filepath>/proc/net/wireless</unix-def:filepath>
+      </unix-def:file_object>
+      <unix-def:file_object id="oval:ssg-object_installed_env_is_a_podman_container:obj:1" version="1" comment="Check file /run/.containerenv">
+        <unix-def:filepath>/run/.containerenv</unix-def:filepath>
+      </unix-def:file_object>
+      <unix-def:file_object id="oval:ssg-object_installed_env_is_a_docker_container:obj:1" version="1" comment="Check file /.dockerenv">
+        <unix-def:filepath>/.dockerenv</unix-def:filepath>
+      </unix-def:file_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_id_provider_is_set_to_ad:obj:1" version="1">
+        <ind-def:filepath>/etc/sssd/sssd.conf</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^[\s]*\[domain\/[^]]*]([^\n\[\]]*\n+)+?[\s]*id_provider[ \t]*=[ \t]*((?i)ad)[ \t]*$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <unix-def:file_object id="oval:ssg-object_file_sys_firmware_efi:obj:1" version="1" comment="/sys/firmware/efi">
+        <unix-def:path>/sys/firmware/efi</unix-def:path>
+        <unix-def:filename xsi:nil="true"/>
+      </unix-def:file_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-object_fedora_vendor_product:obj:1" version="1">
+        <ind-def:filepath>/etc/system-release-cpe</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^cpe:\/o:fedoraproject:fedora:[\d]+$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <lin-def:rpminfo_object id="oval:ssg-object_fedora_release_rpm:obj:1" version="1">
+        <lin-def:name operation="pattern match">fedora-release.*</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_version_wrlinux8:obj:1" version="1" comment="Check WRLinux8 version">
+        <ind-def:filepath>/etc/wrlinux-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION=.8\.0.*$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_version_wrlinux1019:obj:1" version="1" comment="Check WRLinux1019 version">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION=.10\.19.*$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_version_centos8:obj:1" version="1" comment="Check os-release VERSION_ID">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID="(\d)"$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:family_object id="oval:ssg-obj_unix_wrlinux8:obj:1" version="1"/>
+      <ind-def:family_object id="oval:ssg-obj_unix_wrlinux1019:obj:1" version="1"/>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_ubuntu_xenial:obj:1" version="1" comment="Check Ubuntu version">
+        <ind-def:filepath>/etc/lsb-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^DISTRIB_CODENAME=xenial$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_ubuntu_focal:obj:1" version="1" comment="Check Ubuntu version">
+        <ind-def:filepath>/etc/lsb-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^DISTRIB_CODENAME=focal$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_ubuntu_bionic:obj:1" version="1" comment="Check Ubuntu version">
+        <ind-def:filepath>/etc/lsb-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^DISTRIB_CODENAME=bionic$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_ubuntu:obj:1" version="1" comment="Check Ubuntu">
+        <ind-def:filepath>/etc/lsb-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^DISTRIB_ID=Ubuntu$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_test_env_has_postfix_installed:obj:1" version="1">
+        <lin-def:name>postfix</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_test_env_has_ntp_installed:obj:1" version="1">
+        <lin-def:name>ntp</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_test_env_has_chrony_installed:obj:1" version="1">
+        <lin-def:name>chrony</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sles_15_for_sap:obj:1" version="1">
+        <lin-def:name>SLES_SAP-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sles_12_for_sap:obj:1" version="1">
+        <lin-def:name>SLES_SAP-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:family_object id="oval:ssg-obj_sle15_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sle15_server:obj:1" version="1">
+        <lin-def:name>sles-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sle15_desktop:obj:1" version="1">
+        <lin-def:name>sled-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:family_object id="oval:ssg-obj_sle12_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sle12_server:obj:1" version="1">
+        <lin-def:name>sles-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sle12_desktop:obj:1" version="1">
+        <lin-def:name>sled-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sl7:obj:1" version="1">
+        <lin-def:name>sl-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_sl6:obj:1" version="1">
+        <lin-def:name>sl-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhvh4_version:obj:1" version="1">
+        <lin-def:name>redhat-release-virtualization-host</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhosp13_release:obj:1" version="1">
+        <lin-def:name>rhosp-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhosp10_release:obj:1" version="1">
+        <lin-def:name>rhosp-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhevm4_version:obj:1" version="1">
+        <lin-def:name>rhvm-appliance</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhevh_rhel9_version:obj:1" version="1">
+        <ind-def:filepath>/etc/redhat-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhevh_rhel8_version:obj:1" version="1">
+        <ind-def:filepath>/etc/redhat-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhevh_rhel7_version:obj:1" version="1">
+        <ind-def:filepath>/etc/redhat-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:family_object id="oval:ssg-obj_rhel9_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel9:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:family_object id="oval:ssg-obj_rhel8_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_9:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_8:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_7:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_6:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_5:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_4:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_3:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_2:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_1:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_10:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8_0:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel8:obj:1" version="1">
+        <lin-def:name>redhat-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel7_workstation:obj:1" version="1">
+        <lin-def:name>redhat-release-workstation</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:family_object id="oval:ssg-obj_rhel7_unix_family:obj:1" version="1"/>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel7_server:obj:1" version="1">
+        <lin-def:name>redhat-release-server</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel7_computenode:obj:1" version="1">
+        <lin-def:name>redhat-release-computenode</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_rhel7_client:obj:1" version="1">
+        <lin-def:name>redhat-release-client</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhcos:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID="(\w+)"$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_rhcos4:obj:1" version="1">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^VERSION_ID="(\d)\.\d+"$</ind-def:pattern>
+        <ind-def:instance operation="greater than or equal" datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_opensuse_leap42_installed:obj:1" version="1">
+        <lin-def:name>openSUSE-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_opensuse_leap15_installed:obj:1" version="1">
+        <lin-def:name>openSUSE-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_opensuse_installed:obj:1" version="1">
+        <lin-def:name>openSUSE-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_ol8_system:obj:1" version="1">
+        <lin-def:name>oraclelinux-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_ol7_system:obj:1" version="1">
+        <lin-def:name>oraclelinux-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_name_wrlinux1019:obj:1" version="1" comment="Check WRLinux1019 produce name">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^NAME=.Wind[\s]+River[\s]+Linux.*$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_name_centos8:obj:1" version="1" comment="Check os-release ID">
+        <ind-def:filepath>/etc/os-release</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^ID="(\w+)"$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <unix-def:file_object id="oval:ssg-obj_lsb:obj:1" version="1" comment="check /etc/lsb-release file">
+        <unix-def:filepath>/etc/lsb-release</unix-def:filepath>
+      </unix-def:file_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_zipl_installed:obj:1" version="1">
+        <lin-def:name>s390utils-base</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_yum_installed:obj:1" version="1">
+        <lin-def:name>yum</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_systemd_installed:obj:1" version="1">
+        <lin-def:name>systemd</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_sudo_installed:obj:1" version="1">
+        <lin-def:name>sudo</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_sssd-common_installed:obj:1" version="1">
+        <lin-def:name>sssd-common</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_pam_installed:obj:1" version="1">
+        <lin-def:name>pam</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_nss-pam-ldapd_installed:obj:1" version="1">
+        <lin-def:name>nss-pam-ldapd</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_net-snmp_installed:obj:1" version="1">
+        <lin-def:name>net-snmp</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_login_defs_installed:obj:1" version="1">
+        <lin-def:name>shadow-utils</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_libuser_installed:obj:1" version="1">
+        <lin-def:name>libuser</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_grub2_installed:obj:1" version="1">
+        <lin-def:name>grub2-common</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_gdm_installed:obj:1" version="1">
+        <lin-def:name>gdm</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_env_has_audit_installed:obj:1" version="1">
+        <lin-def:name>audit</lin-def:name>
+      </lin-def:rpminfo_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_debian_9:obj:1" version="1" comment="Check Debian version">
+        <ind-def:filepath>/etc/debian_version</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^9.[0-9]+$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_debian_11:obj:1" version="1" comment="Check Debian version">
+        <ind-def:filepath>/etc/debian_version</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^11.[0-9]+$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <ind-def:textfilecontent54_object id="oval:ssg-obj_debian_10:obj:1" version="1" comment="Check Debian version">
+        <ind-def:filepath>/etc/debian_version</ind-def:filepath>
+        <ind-def:pattern operation="pattern match">^10.[0-9]+$</ind-def:pattern>
+        <ind-def:instance datatype="int">1</ind-def:instance>
+      </ind-def:textfilecontent54_object>
+      <unix-def:file_object id="oval:ssg-obj_debian:obj:1" version="1" comment="check /etc/debian_version file">
+        <unix-def:filepath>/etc/debian_version</unix-def:filepath>
+      </unix-def:file_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_centos7:obj:1" version="1">
+        <lin-def:name>centos-release</lin-def:name>
+      </lin-def:rpminfo_object>
+      <lin-def:rpminfo_object id="oval:ssg-obj_centos6:obj:1" version="1">
+        <lin-def:name>centos-release</lin-def:name>
+      </lin-def:rpminfo_object>
+    </objects>
+    <states>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_version_centos8:ste:1" version="1">
+        <ind-def:subexpression>8</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:family_state id="oval:ssg-state_unix_wrlinux8:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <ind-def:family_state id="oval:ssg-state_unix_wrlinux1019:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <ind-def:family_state id="oval:ssg-state_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <unix-def:uname_state id="oval:ssg-state_system_info_architecture_ppcle_64:ste:1" version="1" comment="64 bit architecture">
+        <unix-def:processor_type>ppc64le</unix-def:processor_type>
+      </unix-def:uname_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sles_15_for_sap:ste:1" version="1">
+        <lin-def:version operation="pattern match">^15.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sles_12_for_sap:ste:1" version="1">
+        <lin-def:version operation="pattern match">^12.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:family_state id="oval:ssg-state_sle15_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sle15_server:ste:1" version="1">
+        <lin-def:version operation="pattern match">^15.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sle15_desktop:ste:1" version="1">
+        <lin-def:version operation="pattern match">^15.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:family_state id="oval:ssg-state_sle12_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sle12_server:ste:1" version="1">
+        <lin-def:version operation="pattern match">^12.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sle12_desktop:ste:1" version="1">
+        <lin-def:version operation="pattern match">^12.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sl7:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_sl6:ste:1" version="1">
+        <lin-def:version operation="pattern match">^6.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhvh4_version:ste:1" version="1">
+        <lin-def:evr operation="greater than or equal" datatype="evr_string">0:4.4</lin-def:evr>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhosp13_release:ste:1" version="1">
+        <lin-def:version operation="pattern match">^13.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhosp10_release:ste:1" version="1">
+        <lin-def:version operation="pattern match">^10.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhevm4_version:ste:1" version="1">
+        <lin-def:version operation="pattern match">^4.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhevh_rhel9_version:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">9</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhevh_rhel8_version:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">8</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhevh_rhel7_version:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">7</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:family_state id="oval:ssg-state_rhel9_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel9:ste:1" version="1">
+        <lin-def:version operation="pattern match">^9.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:family_state id="oval:ssg-state_rhel8_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_9:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.9*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_8:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.8*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_7:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.7*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_6:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.6*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_5:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.5*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_4:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.4*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_3:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.3*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_2:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.2*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_1:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.1*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_10:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.10*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8_0:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.0*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel8:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel7_workstation:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:family_state id="oval:ssg-state_rhel7_unix_family:ste:1" version="1">
+        <ind-def:family>unix</ind-def:family>
+      </ind-def:family_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel7_server:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel7_computenode:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_rhel7_client:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhcos:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">rhcos</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_rhcos4:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">4</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_proc_sys_kernel_osrelease_arch_s390x:ste:1" version="1">
+        <ind-def:subexpression operation="pattern match">^s390x$</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_opensuse_leap42_installed:ste:1" version="1">
+        <lin-def:version operation="pattern match">^42.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_opensuse_leap15_installed:ste:1" version="1">
+        <lin-def:version operation="pattern match">^15.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_opensuse_installed:ste:1" version="1">
+        <lin-def:name operation="pattern match">openSUSE-release</lin-def:name>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_ol8_system:ste:1" version="1">
+        <lin-def:version operation="pattern match">^8.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_ol7_system:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <ind-def:textfilecontent54_state id="oval:ssg-state_name_centos8:ste:1" version="1">
+        <ind-def:subexpression>centos</ind-def:subexpression>
+      </ind-def:textfilecontent54_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_centos7:ste:1" version="1">
+        <lin-def:version operation="pattern match">^7.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+      <lin-def:rpminfo_state id="oval:ssg-state_centos6:ste:1" version="1">
+        <lin-def:version operation="pattern match">^6.*$</lin-def:version>
+      </lin-def:rpminfo_state>
+    </states>
+  </oval_definitions>
+  <results>
+    <system>
+      <definitions>
+        <definition definition_id="oval:ssg-system_boot_mode_is_uefi:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_efi_dir_existence:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-system_boot_mode_is_non_uefi:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-system_boot_mode_is_uefi:def:1" version="1" result="not evaluated" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-sssd_conf_uses_ldap:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_id_provider_is_set_to_ad:tst:1" version="1" result="not evaluated" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-proc_sys_kernel_osrelease_arch_not_s390x:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-proc_sys_kernel_osrelease_arch_s390x:def:1" version="1" result="not evaluated" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_is_a_machine:def:1" result="true" version="2">
+          <criteria operator="AND" result="true">
+            <extend_definition definition_ref="oval:ssg-installed_env_is_a_container:def:1" version="2" result="true" negate="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_is_a_container:def:1" result="false" version="2">
+          <criteria operator="OR" result="false">
+            <criterion test_ref="oval:ssg-test_installed_env_is_a_docker_container:tst:1" version="1" result="false"/>
+            <criterion test_ref="oval:ssg-test_installed_env_is_a_podman_container:tst:1" version="1" result="false"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_zipl_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_zipl_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_yum_package:def:1" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:ssg-test_env_has_yum_installed:tst:1" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_wifi_interface:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_proc_net_wireless_exists:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_systemd_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_systemd_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_sudo_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_sudo_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_sssd-common_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_sssd-common_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_postfix_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_postfix_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_pam_package:def:1" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:ssg-test_env_has_pam_installed:tst:1" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_ntp_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_ntp_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_nss-pam-ldapd_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_nss-pam-ldapd_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_net-snmp_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_net-snmp_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_login_defs:def:1" result="true" version="1">
+          <criteria operator="AND" result="true">
+            <criterion test_ref="oval:ssg-test_env_has_login_defs_installed:tst:1" version="1" result="true"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_libuser_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_libuser_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_grub2_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_grub2_installed:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" version="1" result="not evaluated" negate="true"/>
+              <criterion test_ref="oval:ssg-test_system_using_opal:tst:1" version="1" result="not evaluated" negate="true"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_gdm_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_gdm_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_chrony_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_chrony_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_env_has_audit_package:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_env_has_audit_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_app_is_rhv4:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel7:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_rhevm4_version:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_app_is_rhosp13:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel7:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_rhosp13_release:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_app_is_rhosp10:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel7:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_rhosp10_release:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_wrlinux8:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_unix_wrlinux8:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_wrlinux8_version:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_wrlinux1019:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_unix_wrlinux1019:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_wrlinux1019_name:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_wrlinux1019_version:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ubuntu:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_lsb:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_ubuntu:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ubuntu2004:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_ubuntu:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_ubuntu_focal:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ubuntu1804:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_ubuntu:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_ubuntu_bionic:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ubuntu1604:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_ubuntu:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_ubuntu_xenial:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_sle15:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_sle15_unix_family:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_sle15_desktop:tst:1" version="1" result="not evaluated"/>
+              <criterion test_ref="oval:ssg-test_sle15_server:tst:1" version="1" result="not evaluated"/>
+              <criterion test_ref="oval:ssg-test_sles_15_for_sap:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_sle12:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_sle12_unix_family:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_sle12_desktop:tst:1" version="1" result="not evaluated"/>
+              <criterion test_ref="oval:ssg-test_sle12_server:tst:1" version="1" result="not evaluated"/>
+              <criterion test_ref="oval:ssg-test_sles_12_for_sap:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_sl7:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_sl7:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_sl6:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_sl6:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhv4:def:1" result="not evaluated" version="1">
+          <criteria operator="OR" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_rhel8:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel9:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel9_unix_family:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_rhel9:tst:1" version="1" result="not evaluated"/>
+              <criteria operator="AND" result="not evaluated">
+                <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" version="1" result="not evaluated"/>
+                <criterion test_ref="oval:ssg-test_rhevh_rhel9_version:tst:1" version="1" result="not evaluated"/>
+              </criteria>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_9:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_9:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_8:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_8:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_7:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_7:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_6:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_6:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_5:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_5:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_4:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_4:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_3:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_3:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_2:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_2:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_1:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_1:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_10:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_10:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8_0:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_0:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel8:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_rhel8_unix_family:tst:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_rhel8:tst:1" version="1" result="not evaluated"/>
+              <criteria operator="AND" result="not evaluated">
+                <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" version="1" result="not evaluated"/>
+                <criterion test_ref="oval:ssg-test_rhevh_rhel8_version:tst:1" version="1" result="not evaluated"/>
+              </criteria>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhel7:def:1" result="false" version="1">
+          <criteria operator="AND" result="false">
+            <criterion test_ref="oval:ssg-test_rhel7_unix_family:tst:1" version="1" result="true"/>
+            <criteria operator="OR" result="false">
+              <criterion test_ref="oval:ssg-test_rhel7_client:tst:1" version="1" result="false"/>
+              <criterion test_ref="oval:ssg-test_rhel7_workstation:tst:1" version="1" result="false"/>
+              <criterion test_ref="oval:ssg-test_rhel7_server:tst:1" version="1" result="false"/>
+              <criterion test_ref="oval:ssg-test_rhel7_computenode:tst:1" version="1" result="false"/>
+              <criteria operator="AND" result="false">
+                <criterion test_ref="oval:ssg-test_rhvh4_version:tst:1" version="1" result="false"/>
+                <criterion test_ref="oval:ssg-test_rhevh_rhel7_version:tst:1" version="1" result="false"/>
+              </criteria>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_rhcos4:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criteria operator="AND" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_rhcos:tst:1" version="1" result="not evaluated"/>
+              <criterion test_ref="oval:ssg-test_rhcos4:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <criterion test_ref="oval:ssg-test_unix_family:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_opensuse_leap42:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_opensuse:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_opensuse_leap42_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_opensuse_leap15:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_opensuse:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_opensuse_leap15_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_opensuse:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_opensuse_installed:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ol8_family:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_ol8_system:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_ol7_family:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criteria operator="OR" result="not evaluated">
+              <criterion test_ref="oval:ssg-test_ol7_system:tst:1" version="1" result="not evaluated"/>
+            </criteria>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_fedora:def:1" result="not evaluated" version="3">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_fedora_release_rpm:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_fedora_vendor_product:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_debian:def:1" result="not evaluated" version="1">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_debian:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_debian9:def:1" result="not evaluated" version="3">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_debian:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_debian_9:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_debian11:def:1" result="not evaluated" version="3">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_debian:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_debian_11:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_debian10:def:1" result="not evaluated" version="3">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_debian:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_debian_10:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_centos8:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_centos8_name:tst:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_centos8_version:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_centos7:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_centos7:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+        <definition definition_id="oval:ssg-installed_OS_is_centos6:def:1" result="not evaluated" version="2">
+          <criteria operator="AND" result="not evaluated">
+            <extend_definition definition_ref="oval:ssg-installed_OS_is_part_of_Unix_family:def:1" version="1" result="not evaluated"/>
+            <criterion test_ref="oval:ssg-test_centos6:tst:1" version="1" result="not evaluated"/>
+          </criteria>
+        </definition>
+      </definitions>
+      <tests>
+        <test test_id="oval:ssg-test_centos6:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_centos7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_centos8_name:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_centos8_version:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_debian:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_debian_10:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_debian_11:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_debian_9:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_efi_dir_existence:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_audit_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_chrony_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_gdm_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_grub2_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_libuser_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_login_defs_installed:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1044783" result="not evaluated"/>
+        </test>
+        <test test_id="oval:ssg-test_env_has_net-snmp_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_nss-pam-ldapd_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_ntp_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_pam_installed:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1044782" result="not evaluated"/>
+        </test>
+        <test test_id="oval:ssg-test_env_has_postfix_installed:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_sssd-common_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_sudo_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_systemd_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_env_has_yum_installed:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1044781" result="not evaluated"/>
+        </test>
+        <test test_id="oval:ssg-test_env_has_zipl_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_fedora_release_rpm:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_fedora_vendor_product:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_id_provider_is_set_to_ad:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_installed_env_is_a_docker_container:tst:1" version="1" check_existence="all_exist" check="all" result="false"/>
+        <test test_id="oval:ssg-test_installed_env_is_a_podman_container:tst:1" version="1" check_existence="all_exist" check="all" result="false"/>
+        <test test_id="oval:ssg-test_lsb:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ol7_system:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ol8_system:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_opensuse_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_opensuse_leap15_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_opensuse_leap42_installed:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_proc_net_wireless_exists:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_proc_sys_kernel_osrelease_arch_s390x:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhcos4:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhcos:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel7_client:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhel7_computenode:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhel7_server:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhel7_unix_family:tst:1" version="1" check="all" result="true">
+          <tested_item item_id="1044731" result="true"/>
+        </test>
+        <test test_id="oval:ssg-test_rhel7_workstation:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhel8:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_0:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_10:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_1:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_2:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_3:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_4:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_5:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_6:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_8:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_9:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel8_unix_family:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel9:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhel9_unix_family:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhevh_rhel7_version:tst:1" version="1" check="all" result="false"/>
+        <test test_id="oval:ssg-test_rhevh_rhel8_version:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhevh_rhel9_version:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhevm4_version:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhosp10_release:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhosp13_release:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_rhvh4_version:tst:1" version="1" check_existence="only_one_exists" check="all" result="false"/>
+        <test test_id="oval:ssg-test_sl6:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sl7:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sle12_desktop:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sle12_server:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sle12_unix_family:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sle15_desktop:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sle15_server:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sle15_unix_family:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sles_12_for_sap:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_sles_15_for_sap:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_system_info_architecture_ppcle_64:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_system_using_opal:tst:1" version="1" check_existence="all_exist" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ubuntu:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ubuntu_bionic:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ubuntu_focal:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_ubuntu_xenial:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_unix_family:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_unix_wrlinux1019:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_unix_wrlinux8:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_wrlinux1019_name:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_wrlinux1019_version:tst:1" version="1" check="all" result="not evaluated"/>
+        <test test_id="oval:ssg-test_wrlinux8_version:tst:1" version="1" check="all" result="not evaluated"/>
+      </tests>
+      <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
+        <generator>
+          <oval:product_name>combine_ovals.py from SCAP Security Guide</oval:product_name>
+          <oval:product_version>ssg: [0, 1, 59], python: 3.9.7</oval:product_version>
+          <oval:schema_version>5.10</oval:schema_version>
+          <oval:timestamp>2021-12-04T17:26:07</oval:timestamp>
+        </generator>
+        <system_info>
+          <os_name>Linux</os_name>
+          <os_version>#1 SMP Wed Oct 13 17:20:51 UTC 2021</os_version>
+          <architecture>x86_64</architecture>
+          <primary_host_name>srv2</primary_host_name>
+          <interfaces>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>127.0.0.1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>192.168.2.20</ip_address>
+              <mac_address>0C:32:13:27:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth1</interface_name>
+              <ip_address>11.12.13.111</ip_address>
+              <mac_address>0C:32:13:27:00:01</mac_address>
+            </interface>
+            <interface>
+              <interface_name>lo</interface_name>
+              <ip_address>::1</ip_address>
+              <mac_address>00:00:00:00:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>fd78:9d5d:98a5:10:e32:13ff:fe27:0</ip_address>
+              <mac_address>0C:32:13:27:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth0</interface_name>
+              <ip_address>fe80::e32:13ff:fe27:0</ip_address>
+              <mac_address>0C:32:13:27:00:00</mac_address>
+            </interface>
+            <interface>
+              <interface_name>eth1</interface_name>
+              <ip_address>fe80::9b18:6db5:34b9:d9c0</ip_address>
+              <mac_address>0C:32:13:27:00:01</mac_address>
+            </interface>
+          </interfaces>
+        </system_info>
+        <collected_objects>
+          <object id="oval:ssg-obj_env_has_login_defs_installed:obj:1" version="1" flag="complete">
+            <reference item_ref="1044783"/>
+          </object>
+          <object id="oval:ssg-obj_env_has_pam_installed:obj:1" version="1" flag="complete">
+            <reference item_ref="1044782"/>
+          </object>
+          <object id="oval:ssg-obj_env_has_yum_installed:obj:1" version="1" flag="complete">
+            <reference item_ref="1044781"/>
+          </object>
+          <object id="oval:ssg-obj_rhel7_client:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhel7_computenode:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhel7_server:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhel7_unix_family:obj:1" version="1" flag="complete">
+            <reference item_ref="1044731"/>
+          </object>
+          <object id="oval:ssg-obj_rhel7_workstation:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhevh_rhel7_version:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-obj_rhvh4_version:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-object_installed_env_is_a_docker_container:obj:1" version="1" flag="does not exist"/>
+          <object id="oval:ssg-object_installed_env_is_a_podman_container:obj:1" version="1" flag="does not exist"/>
+        </collected_objects>
+        <system_data>
+          <lin-sys:rpminfo_item id="1044783" status="exists">
+            <lin-sys:name>shadow-utils</lin-sys:name>
+            <lin-sys:arch>x86_64</lin-sys:arch>
+            <lin-sys:epoch>2</lin-sys:epoch>
+            <lin-sys:release>5.el7</lin-sys:release>
+            <lin-sys:version>4.6</lin-sys:version>
+            <lin-sys:evr datatype="evr_string">2:4.6-5.el7</lin-sys:evr>
+            <lin-sys:signature_keyid>24c6a8a7f4a80eb5</lin-sys:signature_keyid>
+            <lin-sys:extended_name>shadow-utils-2:4.6-5.el7.x86_64</lin-sys:extended_name>
+          </lin-sys:rpminfo_item>
+          <lin-sys:rpminfo_item id="1044782" status="exists">
+            <lin-sys:name>pam</lin-sys:name>
+            <lin-sys:arch>x86_64</lin-sys:arch>
+            <lin-sys:epoch>(none)</lin-sys:epoch>
+            <lin-sys:release>23.el7</lin-sys:release>
+            <lin-sys:version>1.1.8</lin-sys:version>
+            <lin-sys:evr datatype="evr_string">0:1.1.8-23.el7</lin-sys:evr>
+            <lin-sys:signature_keyid>24c6a8a7f4a80eb5</lin-sys:signature_keyid>
+            <lin-sys:extended_name>pam-0:1.1.8-23.el7.x86_64</lin-sys:extended_name>
+          </lin-sys:rpminfo_item>
+          <lin-sys:rpminfo_item id="1044781" status="exists">
+            <lin-sys:name>yum</lin-sys:name>
+            <lin-sys:arch>noarch</lin-sys:arch>
+            <lin-sys:epoch>(none)</lin-sys:epoch>
+            <lin-sys:release>168.el7.centos</lin-sys:release>
+            <lin-sys:version>3.4.3</lin-sys:version>
+            <lin-sys:evr datatype="evr_string">0:3.4.3-168.el7.centos</lin-sys:evr>
+            <lin-sys:signature_keyid>24c6a8a7f4a80eb5</lin-sys:signature_keyid>
+            <lin-sys:extended_name>yum-0:3.4.3-168.el7.centos.noarch</lin-sys:extended_name>
+          </lin-sys:rpminfo_item>
+          <ind-sys:family_item id="1044731" status="exists">
+            <ind-sys:family>unix</ind-sys:family>
+          </ind-sys:family_item>
+        </system_data>
+      </oval_system_characteristics>
+    </system>
+  </results>
+</oval_results>
