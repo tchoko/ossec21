@@ -1,4 +1,4 @@
-//initialisation des variables d'environnement
+//Initialisation des variables d'environnement
 target="srv2"
 type="$target-bp28m-before"
 data_stream="/usr/share/xml/scap/ssg/content/ssg-rhel7-ds-1.2.xml"
@@ -8,10 +8,10 @@ ssh-copy-id $target
 
 ssh $target "yum -y install scap-security-guide"
 
-//installation  station de controle
+//Installation  station de controle
 curl -L https://git.io/JMiO5 | bash -x
 
-//scanner
+//Scanner
 type="$target-bpm28-before"
 profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"
 oscap-ssh --sudo root@$target 22 xccdf eval \
@@ -27,7 +27,7 @@ $data_stream
 ls -l srv2*
 ls -l ssg*
 
-//géneration du guide 
+//Generation du guide 
 oscap xccdf generate guide \
 --profile $profile \
 --output $type-guide.html \
@@ -36,7 +36,7 @@ $type-results.xml
 //lancement du service web 
 python3 -m http.server 8080
 
-//remédiation: Scan d'une règle
+//Remédiation: Scan d'une règle
 rule1="xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs"
 type="rule1-$target-bpm28-before"
 profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"
@@ -50,7 +50,7 @@ oscap-ssh --sudo root@$target 22 xccdf eval \
 --rule $rule1 \
 $data_stream
 
-//géhérer une rémédiation
+//Générer une rémédiation
 result_id=$(oscap info $type-results.xml | grep 'Result ID' | sed 's/[[:blank:]]Result ID: //')
 oscap xccdf generate fix \
 --fix-type ansible \
@@ -59,10 +59,10 @@ oscap xccdf generate fix \
 --result-id $result_id \
 $type-results.xml
 
-//appliquer la remédiation
+//Appliquer la remédiation
 ansible-playbook -i "$target," $type-playbook.yml
 
-//relancer l'audit
+//Relancer l'audit
 rule1="xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs"
 type="rule1-$target-bpm28-after"
 profile="xccdf_org.ssgproject.content_profile_anssi_nt28_minimal"
