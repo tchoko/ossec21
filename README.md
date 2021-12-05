@@ -1,3 +1,4 @@
+//initialisation des variables d'environnement
 target="srv2"
 type="$target-bp28m-before"
 data_stream="/usr/share/xml/scap/ssg/content/ssg-rhel7-ds-1.2.xml"
